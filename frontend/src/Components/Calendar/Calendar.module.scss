@@ -1,0 +1,56 @@
+@import "../../styles/variables.scss";
+
+.calendarControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.calendarButton {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    // TODO replace this color
+    background-color: $light-gray;
+  }
+}
+
+.monthTitle {
+  margin: 0;
+}
+
+.monthContainer {
+  padding: 1rem;
+}
+
+.calendarDaysContainer {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 1rem;
+}
+
+.calendarDayName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendarDay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: $light-gray;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 36px;
+  margin: 0 auto;
+  height: 36px;
+
+  &:hover {
+    background-color: $dark-gray;
+  }
+}
