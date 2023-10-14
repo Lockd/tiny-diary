@@ -38,7 +38,10 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ date }) => {
       autofocus: true,
       data: initialData ?? DEFAULT_INITIAL_DATA,
       onChange: async () => {
-        const { blocks, version, time } = await editor.saver.save();
+        const data = await editor?.saver?.save();
+        if (!data) return;
+
+        const { blocks, version, time } = data;
         dispatch(updateDiaryEntry({ date, blocks, version, time }));
       },
       tools: EDITOR_TOOLS,

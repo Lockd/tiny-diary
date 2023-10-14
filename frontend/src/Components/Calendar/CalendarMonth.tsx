@@ -6,11 +6,15 @@ import { DAYS_OF_THE_WEEK } from "../../utils/dateUtils";
 interface ICalendarMonthProps {
   amountOfDays: number;
   dayOfTheWeekForFirstDay: number;
+  year: number;
+  month: number;
 }
 
 const CalendarMonth: React.FC<ICalendarMonthProps> = ({
   amountOfDays,
   dayOfTheWeekForFirstDay,
+  year,
+  month,
 }) => {
   const renderDays = () => {
     const days = [];
@@ -29,7 +33,15 @@ const CalendarMonth: React.FC<ICalendarMonthProps> = ({
     }
 
     for (let i = 0; i < amountOfDays; i++) {
-      days.push(<CalendarDay key={i} day={i} hasData={false} />);
+      days.push(
+        <CalendarDay
+          key={i}
+          day={i}
+          hasData={false}
+          year={year}
+          month={month}
+        />
+      );
     }
 
     return <>{days.map((day) => day)}</>;

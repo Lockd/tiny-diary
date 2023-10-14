@@ -1,12 +1,23 @@
 import React from "react";
-import TextEditor from "./Components/TextEditor/TextEditor";
-import CalendarManager from "./Components/Calendar/CalendarManager";
-import { format } from "date-fns";
+import Calendar from "./Pages/Calendar/Calendar";
+import EditDiary from "./Pages/Diary/EditDiary";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./Pages/ErrorPage/ErrorPage";
 
 function App() {
-  const currentDate = format(new Date(), "dd.MM.yyyy");
-  return <CalendarManager />;
-  // return <TextEditor date={currentDate} />;
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Calendar />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/:year/:month/:day",
+      element: <EditDiary />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

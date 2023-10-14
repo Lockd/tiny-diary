@@ -54,6 +54,8 @@ const CalendarManager: React.FC<any> = () => {
       </div>
       <div className={styles.monthsWrapper}>
         <CalendarMonth
+          year={selectedYear}
+          month={selectedMonth}
           dayOfTheWeekForFirstDay={getDayOfTheWeek(
             new Date(selectedYear, selectedMonth, 0)
           )}
