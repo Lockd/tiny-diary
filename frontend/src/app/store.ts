@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import diaryReducer from "../Features/Diary/diarySlice";
+import userReducer from "../Features/User/userSlice";
 
 export const store = configureStore({
   reducer: {
     diary: diaryReducer,
-    // add more reducers here
+    user: userReducer,
   },
 });
 
