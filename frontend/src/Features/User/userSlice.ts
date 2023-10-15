@@ -7,16 +7,20 @@ interface IUser {
   name: string | null;
   isLoggedIn: boolean;
   profilePicture: string | null;
+  uid: string | null;
+  isLoading: boolean;
 }
 
-type ISetUserInfo = Omit<IUser, "isLoggedIn">;
+type ISetUserInfo = Omit<IUser, "isLoggedIn" | "isLoading">;
 
 const initialState: IUser = {
   token: "",
   email: null,
-  name: "",
-  profilePicture: "",
+  name: null,
+  profilePicture: null,
   isLoggedIn: false,
+  uid: null,
+  isLoading: true,
 };
 
 const userSlice = createSlice({
@@ -24,22 +28,27 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo(state, payload: PayloadAction<ISetUserInfo>) {
-      const { name, token, email, profilePicture } = payload.payload;
+      const { name, token, email, profilePicture, uid } = payload.payload;
       state.name = name;
       state.token = token;
       state.email = email;
       state.profilePicture = profilePicture;
       state.isLoggedIn = true;
+      state.uid = uid;
     },
     clearUserData(state) {
       state.isLoggedIn = false;
       state.token = "";
-      state.email = "";
-      state.profilePicture = "";
+      state.email = null;
+      state.profilePicture = null;
       state.name = "";
+      state.uid = null;
+    },
+    setIsLoading(state, payload) {
+      state.isLoading = payload.payload.isLoading;
     },
   },
 });
 
-export const { setUserInfo, clearUserData } = userSlice.actions;
+export const { setUserInfo, clearUserData, setIsLoading } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { googleSignIn, auth, appSignOut } from "../../Firebase";
+import { googleSignIn, auth, appSignOut, db } from "../../Firebase";
 import { User } from "firebase/auth";
-import { setUserInfo, clearUserData } from "../../Features/User/userSlice";
+import { addDoc, getDoc, doc, collection } from "firebase/firestore";
+import {
+  setUserInfo,
+  clearUserData,
+  setIsLoading,
+} from "../../Features/User/userSlice";
 
 import styles from "./UserInfo.module.scss";
 
@@ -33,26 +38,37 @@ const Authentication = () => {
   const checkIfLoggedIn = () => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const token = await user.getIdToken();
-        saveUserInfo(user, token);
+        await saveUserInfo(user);
       }
+      dispatch(setIsLoading(false));
     });
   };
 
   const onLogIn = () => {
     googleSignIn()
       .then(async (result) => {
-        const token = await result.user.getIdToken();
-
-        saveUserInfo(result.user, token);
+        saveUserInfo(result.user);
       })
       .catch((error) => console.error(error));
   };
 
-  const saveUserInfo = (user: User, token?: string) => {
-    const { displayName: name, email, photoURL: profilePicture } = user;
+  const saveUserInfo = async (user: User) => {
+    const { displayName: name, email, photoURL: profilePicture, uid } = user;
+    const userInfo = { name, email, profilePicture, uid };
 
-    dispatch(setUserInfo({ name, email, token, profilePicture }));
+    dispatch(setUserInfo(userInfo));
+
+    try {
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) {
+        await addDoc(collection(db, "users"), userInfo);
+      } else {
+        console.log("[UserInfo]: User was already present");
+      }
+    } catch (e) {
+      console.error("[UserInfo]: error occurred during user creation", e);
+    }
   };
 
   const onLogOut = () => {
@@ -60,7 +76,7 @@ const Authentication = () => {
       .then(() => {
         dispatch(clearUserData());
       })
-      .catch((err) => console.error("error signing out", err));
+      .catch((err) => console.error("[UserInfo]: error signing out", err));
   };
 
   if (isLoggedIn) {

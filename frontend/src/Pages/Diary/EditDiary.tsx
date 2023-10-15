@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 const EditDiary = () => {
   const { year, month, day } = useParams();
 
-  return <TextEditor date={`${day}.${month}.${year}`} />;
+  return <TextEditor day={day!} month={month!} year={year!} />;
 };
 
 export default EditDiary;

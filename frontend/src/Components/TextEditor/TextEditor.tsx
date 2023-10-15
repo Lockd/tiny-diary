@@ -1,33 +1,78 @@
 import React, { useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { updateDiaryEntry } from "../../Features/Diary/diarySlice";
+import {
+  updateDiaryEntry,
+  addEmptyDiaryEntry,
+} from "../../Features/Diary/diarySlice";
 import {
   EDITOR_TOOLS,
   DEFAULT_INITIAL_DATA,
   EDITOR_BLOCK_ID,
 } from "./editorConfig";
 import EditorJS from "@editorjs/editorjs";
+import { db } from "../../Firebase";
+import { addDoc, collection, getDocs, setDoc } from "firebase/firestore";
 
 interface IDiaryEditorProps {
-  date: string;
+  day: string;
+  month: string;
+  year: string;
 }
 
-const TextEditor: React.FC<IDiaryEditorProps> = ({ date }) => {
+const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
   const dispatch = useAppDispatch();
-  const initialData = useAppSelector((state) => state.diary[date]);
-
+  const initialData = useAppSelector(
+    (state) => state.diary?.[year]?.[month]?.[day]
+  );
+  const uid = useAppSelector((state) => state.user.uid);
   const ejInstance = useRef<EditorJS | null>();
 
   useEffect(() => {
-    if (ejInstance.current === null) {
+    if (!ejInstance.current) {
       initEditor();
     }
 
+    // initialize diary entry for this day
+    dispatch(addEmptyDiaryEntry({ day, month, year }));
+
     return () => {
-      ejInstance?.current?.destroy();
-      ejInstance.current = null;
+      if (ejInstance.current) {
+        saveDataToFirebase();
+
+        ejInstance.current.destroy();
+        ejInstance.current = null;
+      }
     };
   }, []);
+
+  const saveDataToFirebase = async () => {
+    if (!uid) {
+      console.log("[TextEditor]: no uid, impossible to save");
+      return;
+    }
+
+    const editorData = await ejInstance.current?.saver?.save();
+    if (!editorData) {
+      console.log("[TextEditor]: no data to save");
+      return;
+    }
+
+    try {
+      const dayCollection = collection(db, "users", uid, year, month, day);
+      const docsSnapShot = await getDocs(dayCollection);
+      const docsInCollection = docsSnapShot.docs;
+
+      if (docsInCollection.length) {
+        setDoc(docsInCollection[0].ref, editorData);
+        console.log("should set doc");
+      } else {
+        addDoc(dayCollection, editorData);
+        console.log("should add doc");
+      }
+    } catch (e) {
+      console.error("[TextEditor]: error saving diary", e);
+    }
+  };
 
   const initEditor = () => {
     const editor = new EditorJS({
@@ -38,11 +83,11 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ date }) => {
       autofocus: true,
       data: initialData ?? DEFAULT_INITIAL_DATA,
       onChange: async () => {
-        const data = await editor?.saver?.save();
-        if (!data) return;
+        const editorData = await editor?.saver?.save();
+        if (!editorData) return;
 
-        const { blocks, version, time } = data;
-        dispatch(updateDiaryEntry({ date, blocks, version, time }));
+        dispatch(updateDiaryEntry({ day, month, year, ...editorData }));
+        ejInstance.current = editor;
       },
       tools: EDITOR_TOOLS,
     });
