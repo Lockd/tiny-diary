@@ -15,7 +15,6 @@ const Authentication = () => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const userName = useAppSelector((state) => state.user.name);
-  const profilePicture = useAppSelector((state) => state.user.profilePicture);
   const [isDropdownOpen, setIsDropDownOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -53,8 +52,8 @@ const Authentication = () => {
   };
 
   const saveUserInfo = async (user: User) => {
-    const { displayName: name, email, photoURL: profilePicture, uid } = user;
-    const userInfo = { name, email, profilePicture, uid };
+    const { displayName: name, email, uid } = user;
+    const userInfo = { name, email, uid };
 
     dispatch(setUserInfo(userInfo));
 
@@ -87,15 +86,6 @@ const Authentication = () => {
         ref={wrapperRef}
       >
         <div className={styles.userName}>{userName}</div>
-        <div className={styles.userAvatarContainer}>
-          {profilePicture && (
-            <img
-              src={profilePicture}
-              alt="avatar picture"
-              className={styles.userAvatar}
-            />
-          )}
-        </div>
         {isDropdownOpen && (
           <div className={styles.dropdown}>
             <p className={styles.dropdownText}>

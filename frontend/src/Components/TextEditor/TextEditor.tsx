@@ -1,9 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  updateDiaryEntry,
-  addEmptyDiaryEntry,
-} from "../../Features/Diary/diarySlice";
+import { updateDiaryEntry } from "../../Features/Diary/diarySlice";
 import {
   EDITOR_TOOLS,
   DEFAULT_INITIAL_DATA,
@@ -11,7 +8,14 @@ import {
 } from "./editorConfig";
 import EditorJS from "@editorjs/editorjs";
 import { db } from "../../Firebase";
-import { addDoc, collection, getDocs, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  setDoc,
+  query,
+  where,
+} from "firebase/firestore";
 
 interface IDiaryEditorProps {
   day: string;
@@ -31,9 +35,6 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
     if (!ejInstance.current) {
       initEditor();
     }
-
-    // initialize diary entry for this day
-    dispatch(addEmptyDiaryEntry({ day, month, year }));
 
     return () => {
       if (ejInstance.current) {
@@ -58,16 +59,30 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
     }
 
     try {
-      const dayCollection = collection(db, "users", uid, year, month, day);
-      const docsSnapShot = await getDocs(dayCollection);
-      const docsInCollection = docsSnapShot.docs;
+      const dayCollection = collection(db, "users", uid, year);
 
-      if (docsInCollection.length) {
-        setDoc(docsInCollection[0].ref, editorData);
-        console.log("should set doc");
+      const dataToStore = {
+        ...editorData,
+        day,
+        month,
+        year,
+      };
+
+      const q1 = query(
+        dayCollection,
+        where("year", "==", year),
+        where("month", "==", month),
+        where("day", "==", day)
+      );
+      const documents = await getDocs(q1);
+
+      if (documents.size > 0) {
+        const docRef = documents.docs[0].ref;
+        await setDoc(docRef, dataToStore);
+        console.log("[TextEditor] edited existing document");
       } else {
-        addDoc(dayCollection, editorData);
-        console.log("should add doc");
+        await addDoc(dayCollection, dataToStore);
+        console.log("[TextEditor] added new document");
       }
     } catch (e) {
       console.error("[TextEditor]: error saving diary", e);

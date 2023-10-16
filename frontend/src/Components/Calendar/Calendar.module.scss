@@ -44,7 +44,7 @@
   align-items: center;
   padding: 0.5rem;
   background-color: $light-gray;
-  border-radius: 50%;
+  border-radius: 0.5rem;
   cursor: pointer;
   width: 36px;
   margin: 0 auto;
@@ -53,4 +53,9 @@
   &:hover {
     background-color: $dark-gray;
   }
+}
+
+.calendarDayActive {
+  background-color: $active-color;
+  color: $white;
 }

@@ -6,7 +6,6 @@ interface IUser {
   email: string | null;
   name: string | null;
   isLoggedIn: boolean;
-  profilePicture: string | null;
   uid: string | null;
   isLoading: boolean;
 }
@@ -17,7 +16,6 @@ const initialState: IUser = {
   token: "",
   email: null,
   name: null,
-  profilePicture: null,
   isLoggedIn: false,
   uid: null,
   isLoading: true,
@@ -28,11 +26,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo(state, payload: PayloadAction<ISetUserInfo>) {
-      const { name, token, email, profilePicture, uid } = payload.payload;
+      const { name, token, email, uid } = payload.payload;
       state.name = name;
       state.token = token;
       state.email = email;
-      state.profilePicture = profilePicture;
       state.isLoggedIn = true;
       state.uid = uid;
     },
@@ -40,7 +37,6 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.token = "";
       state.email = null;
-      state.profilePicture = null;
       state.name = "";
       state.uid = null;
     },

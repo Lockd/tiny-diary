@@ -33,15 +33,7 @@ const CalendarMonth: React.FC<ICalendarMonthProps> = ({
     }
 
     for (let i = 0; i < amountOfDays; i++) {
-      days.push(
-        <CalendarDay
-          key={i}
-          day={i}
-          hasData={false}
-          year={year}
-          month={month}
-        />
-      );
+      days.push(<CalendarDay key={i} day={i} year={year} month={month} />);
     }
 
     return <>{days.map((day) => day)}</>;

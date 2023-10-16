@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { OutputBlockData } from "@editorjs/editorjs";
+import type { TBackendDiaryEntry } from "../../types";
 
 interface DiaryState {
   [key: string]: {
@@ -16,17 +17,10 @@ interface DiaryState {
 
 const initialState: DiaryState = {};
 
-interface SavePayload {
-  day: string;
-  month: string;
-  year: string;
-  blocks: OutputBlockData[];
-  version?: string;
-  time?: number;
-}
-
-interface AddEmptyDiaryEntryPayload {
-  day: string;
+interface PopulateDiaryPayload {
+  entries: {
+    [key: string]: TBackendDiaryEntry;
+  };
   month: string;
   year: string;
 }
@@ -35,26 +29,12 @@ const diarySlice = createSlice({
   name: "diary",
   initialState,
   reducers: {
-    addEmptyDiaryEntry(
-      state,
-      payload: PayloadAction<AddEmptyDiaryEntryPayload>
-    ) {
-      const { day, month, year } = payload.payload;
-      // This feels like hell of a workaround
-      state[year] = {
-        [month]: {
-          [day]: {
-            blocks: [],
-          },
-        },
-      };
-    },
-    updateDiaryEntry(state, payload: PayloadAction<SavePayload>) {
+    updateDiaryEntry(state, payload: PayloadAction<TBackendDiaryEntry>) {
       const { day, month, year, blocks, time, version } = payload.payload;
       state[year] = {
-        ...state[year],
+        ...state?.[year],
         [month]: {
-          ...state[year][month],
+          ...state?.[year]?.[month],
           [day]: {
             blocks,
             time,
@@ -63,8 +43,15 @@ const diarySlice = createSlice({
         },
       };
     },
+    populateDiary(state, payload: PayloadAction<PopulateDiaryPayload>) {
+      const { month, year, entries } = payload.payload;
+      state[year] = {
+        ...state[year],
+        [month]: entries,
+      };
+    },
   },
 });
 
-export const { updateDiaryEntry, addEmptyDiaryEntry } = diarySlice.actions;
+export const { updateDiaryEntry, populateDiary } = diarySlice.actions;
 export default diarySlice.reducer;
