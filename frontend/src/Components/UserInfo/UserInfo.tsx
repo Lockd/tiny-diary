@@ -14,6 +14,7 @@ import styles from "./UserInfo.module.scss";
 const Authentication = () => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
+  const isLoading = useAppSelector((state) => state.user.isLoading);
   const userName = useAppSelector((state) => state.user.name);
   const [isDropdownOpen, setIsDropDownOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -77,6 +78,8 @@ const Authentication = () => {
       })
       .catch((err) => console.error("[UserInfo]: error signing out", err));
   };
+
+  if (isLoading) return null;
 
   if (isLoggedIn) {
     return (
