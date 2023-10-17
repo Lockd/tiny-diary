@@ -13,6 +13,7 @@ import { db } from "../../Firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { TBackendDiaryEntry } from "../../types";
 import { populateDiary } from "../../Features/Diary/diarySlice";
+import MoodChart from "../MoodChart/MoodChart";
 
 const CalendarManager: React.FC<any> = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,8 @@ const CalendarManager: React.FC<any> = () => {
     (state) => state.diary?.[selectedYear]?.[selectedMonth + 1]
   );
   const monthName = getMonthName(selectedMonth);
+
+  const amountOfDays = getDaysInMonth(selectedMonth, selectedYear);
 
   useEffect(() => {
     // TODO download next and previous month if need
@@ -99,9 +102,14 @@ const CalendarManager: React.FC<any> = () => {
           dayOfTheWeekForFirstDay={getDayOfTheWeek(
             new Date(selectedYear, selectedMonth, 0)
           )}
-          amountOfDays={getDaysInMonth(selectedMonth, selectedYear)}
+          amountOfDays={amountOfDays}
         />
       </div>
+      <MoodChart
+        month={selectedMonth}
+        year={selectedYear}
+        amountOfDays={amountOfDays}
+      />
     </div>
   );
 };
