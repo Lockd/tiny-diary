@@ -7,4 +7,5 @@ export type TBackendDiaryEntry = {
   version?: string;
   time?: number;
   blocks: OutputBlockData[];
+  mood?: number;
 };

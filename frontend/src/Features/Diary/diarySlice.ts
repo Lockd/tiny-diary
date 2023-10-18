@@ -10,6 +10,7 @@ interface DiaryState {
         blocks: OutputBlockData[];
         version?: string;
         time?: number;
+        mood?: number;
       };
     };
   };
@@ -25,6 +26,13 @@ interface PopulateDiaryPayload {
   year: string;
 }
 
+interface SetMoodPayload {
+  day: string;
+  month: string;
+  year: string;
+  mood: number;
+}
+
 const diarySlice = createSlice({
   name: "diary",
   initialState,
@@ -36,9 +44,23 @@ const diarySlice = createSlice({
         [month]: {
           ...state?.[year]?.[month],
           [day]: {
+            ...state?.[year]?.[month]?.[day],
             blocks,
             time,
             version,
+          },
+        },
+      };
+    },
+    setMood(state, payload: PayloadAction<SetMoodPayload>) {
+      const { day, month, year, mood } = payload.payload;
+      state[year] = {
+        ...state?.[year],
+        [month]: {
+          ...state?.[year]?.[month],
+          [day]: {
+            ...state?.[year]?.[month]?.[day],
+            mood,
           },
         },
       };
@@ -53,5 +75,5 @@ const diarySlice = createSlice({
   },
 });
 
-export const { updateDiaryEntry, populateDiary } = diarySlice.actions;
+export const { updateDiaryEntry, populateDiary, setMood } = diarySlice.actions;
 export default diarySlice.reducer;

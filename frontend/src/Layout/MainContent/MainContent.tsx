@@ -4,7 +4,7 @@ import Footer from "../Footer/Footer";
 import styles from "./MainContent.module.scss";
 import { Outlet } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import { ClockLoader } from "react-spinners";
+import { CircularProgress } from "@mui/material";
 
 const Main = () => {
   const isLoading = useAppSelector((state) => state.user.isLoading);
@@ -13,20 +13,16 @@ const Main = () => {
 
   if (isLoading) {
     content = (
-      <ClockLoader
-        className={styles.appLoader}
-        size={150}
-        speedMultiplier={0.5}
-      />
+      <div className={styles.appLoaderContainer}>
+        <CircularProgress className={styles.appLoader} size={100} />
+      </div>
     );
   }
 
   return (
     <div className={styles.appWrapper}>
       <Header />
-      <main className={styles.appMainContent}>
-        <div className={styles.appContent}>{content}</div>
-      </main>
+      <main className={styles.appMainContent}>{content}</main>
       <Footer />
     </div>
   );

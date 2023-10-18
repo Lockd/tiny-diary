@@ -1,0 +1,14 @@
+@import "../../styles/variables.scss";
+
+.moodSliderTitle {
+}
+
+.moodButtonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.moodButton {
+  flex: 1;
+}

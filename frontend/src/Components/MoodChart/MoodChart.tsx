@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   LineChart,
   XAxis,
@@ -12,34 +12,50 @@ import { MOOD_BORDERS } from "../../utils/constants";
 import styles from "./MoodChart.module.scss";
 import { getMonthName } from "../../utils/dateUtils";
 
-interface MoodChart {
+interface IMoodChartProps {
   year: number;
   month: number;
   amountOfDays: number;
 }
 
-const MoodChart: React.FC<MoodChart> = ({ year, month, amountOfDays }) => {
-  // TODO get data for graph from the table
-  const monthName = getMonthName(month);
+interface IMoodDataUnit {
+  name: string;
+  mood: number | null;
+}
 
-  const generateMoodData = () => {
-    const data = [];
+const MoodChart: React.FC<IMoodChartProps> = ({
+  year,
+  month,
+  amountOfDays,
+}) => {
+  const [moodData, setMoodData] = useState<IMoodDataUnit[]>([]);
+  const monthName = getMonthName(month);
+  const monthDiary = useAppSelector(
+    (state) => state.diary?.[year]?.[month + 1]
+  );
+
+  useEffect(() => {
+    const data: IMoodDataUnit[] = [];
+
     for (let i = 1; i <= amountOfDays; i++) {
+      const mood = monthDiary?.[i]?.mood ?? null;
+
       data.push({
         name: `${i}.${month + 1}.${year}`,
-        mood: Math.floor(Math.random() * 5 - 2),
+        mood,
       });
     }
-    return data;
-  };
+
+    setMoodData(data);
+  }, [monthDiary]);
 
   return (
     <div className={styles.moodGraphWrapper}>
       <h2 className={styles.moodGraphTitle}>Your mood for {monthName}</h2>
       <LineChart
-        width={600}
+        width={450}
         height={200}
-        data={generateMoodData()}
+        data={moodData}
         margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
       >
         <XAxis
@@ -49,8 +65,14 @@ const MoodChart: React.FC<MoodChart> = ({ year, month, amountOfDays }) => {
         />
         <YAxis dataKey="mood" domain={[MOOD_BORDERS.min, MOOD_BORDERS.max]} />
         <Tooltip />
-        {/* <CartesianGrid stroke="#ccc" strokeDasharray="5 5" /> */}
-        <Line type="monotone" dataKey="mood" stroke="#ff7300" yAxisId={0} />
+        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+        <Line
+          type="monotone"
+          dataKey="mood"
+          stroke="#ff7300"
+          yAxisId={0}
+          connectNulls
+        />
       </LineChart>
     </div>
   );

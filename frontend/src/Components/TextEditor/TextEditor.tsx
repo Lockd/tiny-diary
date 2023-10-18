@@ -25,7 +25,7 @@ interface IDiaryEditorProps {
 
 const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
   const dispatch = useAppDispatch();
-  const initialData = useAppSelector(
+  const diaryData = useAppSelector(
     (state) => state.diary?.[year]?.[month]?.[day]
   );
   const uid = useAppSelector((state) => state.user.uid);
@@ -62,19 +62,19 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
       const dayCollection = collection(db, "users", uid, year);
 
       const dataToStore = {
-        ...editorData,
+        ...diaryData,
         day,
         month,
         year,
       };
 
-      const q1 = query(
+      const daysQuery = query(
         dayCollection,
         where("year", "==", year),
         where("month", "==", month),
         where("day", "==", day)
       );
-      const documents = await getDocs(q1);
+      const documents = await getDocs(daysQuery);
 
       if (documents.size > 0) {
         const docRef = documents.docs[0].ref;
@@ -96,7 +96,7 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: initialData ?? DEFAULT_INITIAL_DATA,
+      data: diaryData ?? DEFAULT_INITIAL_DATA,
       onChange: async () => {
         const editorData = await editor?.saver?.save();
         if (!editorData) return;
@@ -108,7 +108,12 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
     });
   };
 
-  return <div id={EDITOR_BLOCK_ID} />;
+  return (
+    <>
+      <h2>Enter your diary below</h2>
+      <div id={EDITOR_BLOCK_ID} />
+    </>
+  );
 };
 
 export default TextEditor;

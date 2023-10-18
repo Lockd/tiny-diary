@@ -1,11 +1,15 @@
-@import "./../../styles/global.scss";
+@import "./../../styles/variables.scss";
 
 .appWrapper {
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 1rem 4rem;
+  padding: 1rem 1rem;
+
+  @media screen and ($desktop) {
+    padding: 1rem 4rem;
+  }
 }
 
 .appMainContent {
@@ -14,13 +18,15 @@
   margin: 0 auto;
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
 }
 
-.appContent {
+.appLoaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   width: 100%;
-  margin: 1rem 0 auto;
 }
 
 .appLoader {
