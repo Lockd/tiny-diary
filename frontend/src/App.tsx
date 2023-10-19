@@ -1,6 +1,6 @@
 import React from "react";
-import Calendar from "./Pages/Calendar/Calendar";
-import EditDiary from "./Pages/Diary/EditDiary";
+import CalendarPage from "./Pages/Calendar/CalendarPage";
+import EditDiaryPage from "./Pages/EditDiary/EditDiaryPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./Pages/ErrorPage/ErrorPage";
 import MainContent from "./Layout/MainContent/MainContent";
@@ -14,11 +14,11 @@ function App() {
       children: [
         {
           path: "/:year/:month/:day",
-          element: <EditDiary />,
+          element: <EditDiaryPage />,
         },
         {
           path: "/",
-          element: <Calendar />,
+          element: <CalendarPage />,
         },
       ],
     },
