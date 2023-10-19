@@ -63,6 +63,7 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
 
       const dataToStore = {
         ...diaryData,
+        ...editorData,
         day,
         month,
         year,
@@ -79,10 +80,10 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
       if (documents.size > 0) {
         const docRef = documents.docs[0].ref;
         await setDoc(docRef, dataToStore);
-        console.log("[TextEditor] edited existing document");
+        console.log("[TextEditor] edited existing document", dataToStore);
       } else {
         await addDoc(dayCollection, dataToStore);
-        console.log("[TextEditor] added new document");
+        console.log("[TextEditor] added new document", dataToStore);
       }
     } catch (e) {
       console.error("[TextEditor]: error saving diary", e);

@@ -3,29 +3,7 @@ import { Button } from "@mui/material";
 import styles from "./MoodSelector.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setMood } from "../../Features/Diary/diarySlice";
-
-const moodOptions = [
-  {
-    value: -2,
-    label: "😣",
-  },
-  {
-    value: -1,
-    label: "😔",
-  },
-  {
-    value: 0,
-    label: "🙂",
-  },
-  {
-    value: 1,
-    label: "😄",
-  },
-  {
-    value: 2,
-    label: "😎",
-  },
-];
+import { MOOD_OPTIONS } from "../../utils/constants";
 
 interface IMoodSlider {
   day: string;
@@ -47,7 +25,7 @@ const MoodSlider: React.FC<IMoodSlider> = ({ day, month, year }) => {
     <div className={styles.moodSliderWrapper}>
       <h2 className={styles.moodSliderTitle}>How was your mood today?</h2>
       <div className={styles.moodButtonsContainer}>
-        {moodOptions.map((moodOption) => (
+        {MOOD_OPTIONS.map((moodOption) => (
           <Button
             className={styles.moodButton}
             variant={moodOption.value === mood ? "contained" : "outlined"}

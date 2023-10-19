@@ -11,6 +11,7 @@ import { useAppSelector } from "../../app/hooks";
 import { MOOD_BORDERS } from "../../utils/constants";
 import styles from "./MoodChart.module.scss";
 import { getMonthName } from "../../utils/dateUtils";
+import CustomAxisTick from "./CustomAxisTick";
 
 interface IMoodChartProps {
   year: number;
@@ -63,7 +64,11 @@ const MoodChart: React.FC<IMoodChartProps> = ({
           tick={false}
           label={{ value: "Days of the month", angle: 0, position: "center" }}
         />
-        <YAxis dataKey="mood" domain={[MOOD_BORDERS.min, MOOD_BORDERS.max]} />
+        <YAxis
+          dataKey="mood"
+          domain={[MOOD_BORDERS.min, MOOD_BORDERS.max]}
+          tick={<CustomAxisTick />}
+        />
         <Tooltip />
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
         <Line
