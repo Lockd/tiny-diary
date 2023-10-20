@@ -3,15 +3,15 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import styles from "./MainContent.module.scss";
 import { Outlet } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
 import { CircularProgress } from "@mui/material";
+import { auth } from "../../Firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Main = () => {
-  const isLoading = useAppSelector((state) => state.user.isLoading);
-
+  const [user, loading] = useAuthState(auth);
   let content = <Outlet />;
 
-  if (isLoading) {
+  if (loading) {
     content = (
       <div className={styles.appLoaderContainer}>
         <CircularProgress className={styles.appLoader} size={100} />

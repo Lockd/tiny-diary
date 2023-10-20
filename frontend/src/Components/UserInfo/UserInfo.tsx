@@ -1,21 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { googleSignIn, auth, appSignOut, db } from "../../Firebase";
 import { User } from "firebase/auth";
 import { addDoc, getDoc, doc, collection } from "firebase/firestore";
-import {
-  setUserInfo,
-  clearUserData,
-  setIsLoading,
-} from "../../Features/User/userSlice";
-
+import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./UserInfo.module.scss";
 
 const Authentication = () => {
-  const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
-  const isLoading = useAppSelector((state) => state.user.isLoading);
-  const userName = useAppSelector((state) => state.user.name);
+  const [user, loading] = useAuthState(auth);
   const [isDropdownOpen, setIsDropDownOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +31,6 @@ const Authentication = () => {
       if (user) {
         await saveUserInfo(user);
       }
-      dispatch(setIsLoading(false));
     });
   };
 
@@ -55,8 +45,6 @@ const Authentication = () => {
   const saveUserInfo = async (user: User) => {
     const { displayName: name, email, uid } = user;
     const userInfo = { name, email, uid };
-
-    dispatch(setUserInfo(userInfo));
 
     try {
       const userRef = doc(db, "users", uid);
@@ -73,22 +61,20 @@ const Authentication = () => {
 
   const onLogOut = () => {
     appSignOut()
-      .then(() => {
-        dispatch(clearUserData());
-      })
+      .then(() => console.log("[UserInfo]: user signed out"))
       .catch((err) => console.error("[UserInfo]: error signing out", err));
   };
 
-  if (isLoading) return null;
+  if (loading) return null;
 
-  if (isLoggedIn) {
+  if (user !== null) {
     return (
       <div
         className={styles.userInfoContainer}
         onClick={() => setIsDropDownOpen(!isDropdownOpen)}
         ref={wrapperRef}
       >
-        <div className={styles.userName}>{userName}</div>
+        <div className={styles.userName}>{user?.displayName}</div>
         {isDropdownOpen && (
           <div className={styles.dropdown}>
             <p className={styles.dropdownText}>

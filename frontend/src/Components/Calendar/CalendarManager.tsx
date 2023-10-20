@@ -9,11 +9,12 @@ import {
 import CalendarMonth from "./CalendarMonth";
 import styles from "./Calendar.module.scss";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { db } from "../../Firebase";
+import { db, auth } from "../../Firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { TBackendDiaryEntry } from "../../types";
 import { populateDiary } from "../../Features/Diary/diarySlice";
 import MoodChart from "../MoodChart/MoodChart";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const CalendarManager: React.FC<any> = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +25,8 @@ const CalendarManager: React.FC<any> = () => {
   const [selectedYear, setSelectedYear] = useState<number>(
     getYearFromDate(new Date())
   );
-  const uid = useAppSelector((state) => state.user.uid);
+  const [user] = useAuthState(auth);
+  const uid = user?.uid;
   const currentMonthDiary = useAppSelector(
     (state) => state.diary?.[selectedYear]?.[selectedMonth + 1]
   );

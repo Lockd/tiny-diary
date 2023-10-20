@@ -7,7 +7,7 @@ import {
   EDITOR_BLOCK_ID,
 } from "./editorConfig";
 import EditorJS from "@editorjs/editorjs";
-import { db } from "../../Firebase";
+import { db, auth } from "../../Firebase";
 import {
   addDoc,
   collection,
@@ -16,6 +16,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface IDiaryEditorProps {
   day: string;
@@ -25,10 +26,11 @@ interface IDiaryEditorProps {
 
 const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
   const dispatch = useAppDispatch();
+  const [user] = useAuthState(auth);
+  const uid = user?.uid;
   const diaryData = useAppSelector(
     (state) => state.diary?.[year]?.[month]?.[day]
   );
-  const uid = useAppSelector((state) => state.user.uid);
   const ejInstance = useRef<EditorJS | null>();
 
   useEffect(() => {
