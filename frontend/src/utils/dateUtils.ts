@@ -65,3 +65,14 @@ export const getDayOfTheWeek = (date: Date) => getDay(date);
 
 export const getDaysInMonth = (month: number, year: number) =>
   new Date(year, month + 1, 0).getDate();
+
+export const getYearsRange = (range: number) => {
+  const currentYear = getYear(new Date());
+  const years = [];
+
+  for (let i = 0; i < range; i++) {
+    years.push(currentYear + i);
+  }
+
+  return years;
+};

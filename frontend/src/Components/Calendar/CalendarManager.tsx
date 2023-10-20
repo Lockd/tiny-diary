@@ -3,8 +3,9 @@ import {
   getMonthIdxFromDate,
   getDaysInMonth,
   getYearFromDate,
-  getMonthName,
   getDayOfTheWeek,
+  MONTHS,
+  getYearsRange,
 } from "../../utils/dateUtils";
 import CalendarMonth from "./CalendarMonth";
 import styles from "./Calendar.module.scss";
@@ -15,6 +16,14 @@ import { TBackendDiaryEntry } from "../../types";
 import { populateDiary } from "../../Features/Diary/diarySlice";
 import MoodChart from "../MoodChart/MoodChart";
 import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  Button,
+  Select,
+  SelectChangeEvent,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 
 const CalendarManager: React.FC<any> = () => {
   const dispatch = useAppDispatch();
@@ -30,9 +39,9 @@ const CalendarManager: React.FC<any> = () => {
   const currentMonthDiary = useAppSelector(
     (state) => state.diary?.[selectedYear]?.[selectedMonth + 1]
   );
-  const monthName = getMonthName(selectedMonth);
 
   const amountOfDays = getDaysInMonth(selectedMonth, selectedYear);
+  const yearsRange = getYearsRange(3);
 
   useEffect(() => {
     // TODO download next and previous month if need
@@ -84,18 +93,63 @@ const CalendarManager: React.FC<any> = () => {
     setSelectedMonth((prevState) => prevState + 1);
   };
 
+  const onChangeMonth = (e: SelectChangeEvent<number>) => {
+    if (typeof e.target.value === "number") {
+      setSelectedMonth(e.target.value);
+    }
+  };
+
+  const onChangeYear = (e: SelectChangeEvent<number>) => {
+    if (typeof e.target.value === "number") {
+      setSelectedYear(e.target.value);
+    }
+  };
+
   return (
     <div className={styles.calendarWrapper}>
       <div className={styles.calendarControls}>
-        <button onClick={onReduceMonth} className={styles.calendarButton}>
+        <Button onClick={onReduceMonth} className={styles.calendarButton}>
           {"<"}
-        </button>
-        <h2 className={styles.monthTitle}>
-          {monthName} of {selectedYear}
-        </h2>
-        <button onClick={onIncreaseMonth} className={styles.calendarButton}>
+        </Button>
+        <div className={styles.dateSelectContainer}>
+          <FormControl size="small">
+            <InputLabel id="month-select" size="small">
+              Month
+            </InputLabel>
+            <Select
+              id="month-select"
+              value={selectedMonth}
+              label="Month"
+              onChange={onChangeMonth}
+            >
+              {MONTHS.map((month, idx) => (
+                <MenuItem value={idx} key={month}>
+                  {month}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl size="small">
+            <InputLabel id="year-select" size="small">
+              Year
+            </InputLabel>
+            <Select
+              id="year-select"
+              value={selectedYear}
+              label="Year"
+              onChange={onChangeYear}
+            >
+              {yearsRange.map((year) => (
+                <MenuItem value={year} key={year}>
+                  {year}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <Button onClick={onIncreaseMonth} className={styles.calendarButton}>
           {">"}
-        </button>
+        </Button>
       </div>
       <div className={styles.monthsWrapper}>
         <CalendarMonth
