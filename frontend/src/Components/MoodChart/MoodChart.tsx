@@ -6,6 +6,7 @@ import {
   Tooltip,
   CartesianGrid,
   Line,
+  ResponsiveContainer,
 } from "recharts";
 import { useAppSelector } from "../../app/hooks";
 import { MOOD_BORDERS } from "../../utils/constants";
@@ -53,32 +54,32 @@ const MoodChart: React.FC<IMoodChartProps> = ({
   return (
     <div className={styles.moodGraphWrapper}>
       <h2 className={styles.moodGraphTitle}>Your mood for {monthName}</h2>
-      <LineChart
-        width={450}
-        height={200}
-        data={moodData}
-        margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
-      >
-        <XAxis
-          dataKey="name"
-          tick={false}
-          label={{ value: "Days of the month", angle: 0, position: "center" }}
-        />
-        <YAxis
-          dataKey="mood"
-          domain={[MOOD_BORDERS.min, MOOD_BORDERS.max]}
-          tick={<CustomAxisTick />}
-        />
-        <Tooltip />
-        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <Line
-          type="monotone"
-          dataKey="mood"
-          stroke="#ff7300"
-          yAxisId={0}
-          connectNulls
-        />
-      </LineChart>
+      <ResponsiveContainer width="100%" height={250}>
+        <LineChart
+          data={moodData}
+          margin={{ top: 20, right: 20, left: -25, bottom: 5 }}
+        >
+          <XAxis
+            dataKey="name"
+            tick={false}
+            label={{ value: "Days of the month", position: "center" }}
+          />
+          <YAxis
+            dataKey="mood"
+            domain={[MOOD_BORDERS.min, MOOD_BORDERS.max]}
+            tick={<CustomAxisTick />}
+          />
+          <Tooltip />
+          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+          <Line
+            type="monotone"
+            dataKey="mood"
+            stroke="#ff7300"
+            yAxisId={0}
+            connectNulls
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
