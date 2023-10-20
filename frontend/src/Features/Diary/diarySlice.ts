@@ -1,7 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { OutputBlockData } from "@editorjs/editorjs";
 import type { TBackendDiaryEntry } from "../../types";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  setDoc,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../Firebase";
+import { RootState } from "../../app/store";
 
 interface DiaryState {
   [key: string]: {
@@ -26,12 +36,64 @@ interface PopulateDiaryPayload {
   year: string;
 }
 
-interface SetMoodPayload {
+interface SaveDiaryPayload {
   day: string;
   month: string;
   year: string;
-  mood: number;
+  uid?: string;
 }
+
+interface SetMoodPayload {
+  mood: number;
+  day: string;
+  month: string;
+  year: string;
+}
+
+export const saveDiary = createAsyncThunk(
+  "diary/saveDiary",
+  async (data: SaveDiaryPayload, thunkApi) => {
+    const { day, month, year, uid } = data;
+
+    if (!uid) {
+      console.log("[DiarySlice]: no uid, impossible to save document");
+      return;
+    }
+
+    const state = thunkApi.getState() as RootState;
+
+    try {
+      const dayCollection = collection(db, "users", uid, year);
+
+      const dataToStore = {
+        ...state.diary?.[year]?.[month]?.[day],
+        day,
+        month,
+        year,
+      };
+
+      const daysQuery = query(
+        dayCollection,
+        where("year", "==", year),
+        where("month", "==", month),
+        where("day", "==", day)
+      );
+      const documents = await getDocs(daysQuery);
+
+      if (documents.size > 0) {
+        const docRef = documents.docs[0].ref;
+        await setDoc(docRef, dataToStore);
+        console.log("[DiarySlice] edited existing document", dataToStore);
+      } else {
+        await addDoc(dayCollection, dataToStore);
+        console.log("[DiarySlice] added new document", dataToStore);
+      }
+    } catch (e) {
+      console.error("[DiarySlice]: error saving diary", e);
+    }
+    return null;
+  }
+);
 
 const diarySlice = createSlice({
   name: "diary",
@@ -72,6 +134,11 @@ const diarySlice = createSlice({
         [month]: entries,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(saveDiary.fulfilled, (state, action) => {
+      console.log("[DiarySlice]: diary should be saved!");
+    });
   },
 });
 

@@ -1,21 +1,13 @@
 import React, { useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { updateDiaryEntry } from "../../Features/Diary/diarySlice";
+import { updateDiaryEntry, saveDiary } from "../../Features/Diary/diarySlice";
 import {
   EDITOR_TOOLS,
   DEFAULT_INITIAL_DATA,
   EDITOR_BLOCK_ID,
 } from "./editorConfig";
 import EditorJS from "@editorjs/editorjs";
-import { db, auth } from "../../Firebase";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  setDoc,
-  query,
-  where,
-} from "firebase/firestore";
+import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 interface IDiaryEditorProps {
@@ -49,47 +41,7 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
   }, []);
 
   const saveDataToFirebase = async () => {
-    if (!uid) {
-      console.log("[TextEditor]: no uid, impossible to save");
-      return;
-    }
-
-    const editorData = await ejInstance.current?.saver?.save();
-    if (!editorData) {
-      console.log("[TextEditor]: no data to save");
-      return;
-    }
-
-    try {
-      const dayCollection = collection(db, "users", uid, year);
-
-      const dataToStore = {
-        ...diaryData,
-        ...editorData,
-        day,
-        month,
-        year,
-      };
-
-      const daysQuery = query(
-        dayCollection,
-        where("year", "==", year),
-        where("month", "==", month),
-        where("day", "==", day)
-      );
-      const documents = await getDocs(daysQuery);
-
-      if (documents.size > 0) {
-        const docRef = documents.docs[0].ref;
-        await setDoc(docRef, dataToStore);
-        console.log("[TextEditor] edited existing document", dataToStore);
-      } else {
-        await addDoc(dayCollection, dataToStore);
-        console.log("[TextEditor] added new document", dataToStore);
-      }
-    } catch (e) {
-      console.error("[TextEditor]: error saving diary", e);
-    }
+    dispatch(saveDiary({ day, month, year, uid }));
   };
 
   const initEditor = () => {

@@ -37,7 +37,7 @@ const Authentication = () => {
   const onLogIn = () => {
     googleSignIn()
       .then(async (result) => {
-        saveUserInfo(result.user);
+        await saveUserInfo(result.user);
       })
       .catch((error) => console.error(error));
   };
