@@ -1,26 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { googleSignIn, auth, appSignOut, db } from "../../Firebase";
 import { User } from "firebase/auth";
 import { addDoc, getDoc, doc, collection } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./UserInfo.module.scss";
+import { Button } from "@mui/material";
 
 const Authentication = () => {
   const [user, loading] = useAuthState(auth);
-  const [isDropdownOpen, setIsDropDownOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: any) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsDropDownOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   useEffect(() => {
     checkIfLoggedIn();
@@ -69,32 +57,23 @@ const Authentication = () => {
 
   if (user !== null) {
     return (
-      <div
-        className={styles.userInfoContainer}
-        onClick={() => setIsDropDownOpen(!isDropdownOpen)}
-        ref={wrapperRef}
-      >
+      <div className={styles.userInfoContainer} ref={wrapperRef}>
         <div className={styles.userName}>{user?.displayName}</div>
-        {isDropdownOpen && (
-          <div className={styles.dropdown}>
-            <p className={styles.dropdownText}>
-              Your log in information is used to sync data across multiple
-              devices. If you log off newly added texts are not going to be
-              accessible from other devices
-            </p>
-            <button onClick={onLogOut} className={styles.logOutButton}>
-              Log out
-            </button>
-          </div>
-        )}
+        <Button
+          onClick={onLogOut}
+          className={styles.logOutButton}
+          variant="outlined"
+        >
+          Log out
+        </Button>
       </div>
     );
   }
 
   return (
-    <button className={styles.googleSignInBtn} onClick={onLogIn}>
+    <Button className={styles.googleSignInBtn} onClick={onLogIn}>
       Sign In with Google
-    </button>
+    </Button>
   );
 };
 
