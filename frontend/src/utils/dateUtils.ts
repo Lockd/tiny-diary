@@ -76,3 +76,16 @@ export const getYearsRange = (range: number) => {
 
   return years;
 };
+
+export const isYearPresent = (year?: string) =>
+  year && year?.length === 4 && !Number.isNaN(parseInt(year));
+
+export const isDayPresent = (day?: string) =>
+  day &&
+  (day?.length === 2 || day?.length === 1) &&
+  !Number.isNaN(parseInt(day));
+
+export const isMonthPresent = (month?: string) =>
+  month &&
+  (month?.length === 2 || month?.length === 1) &&
+  !Number.isNaN(parseInt(month));

@@ -4,7 +4,13 @@ import styles from "./Footer.module.scss";
 const Footer = () => {
   return (
     <footer className={styles.footerContainer}>
-      here should be a footer text
+      This project is open-sourced, you can&nbsp;
+      <a
+        className={styles.footerLink}
+        href="https://github.com/Lockd/tiny-diary"
+      >
+        contribute
+      </a>
     </footer>
   );
 };

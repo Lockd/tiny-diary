@@ -20,7 +20,10 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({ day, year, month }) => {
   }
 
   return (
-    <Link to={`${year}/${month + 1}/${day + 1}`} className={containerClassName}>
+    <Link
+      to={`/${year}/${month + 1}/${day + 1}`}
+      className={containerClassName}
+    >
       {day + 1}
     </Link>
   );

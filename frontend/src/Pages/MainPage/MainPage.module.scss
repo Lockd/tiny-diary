@@ -1,0 +1,18 @@
+@import "../../styles/variables.scss";
+
+.mainPageContainer {
+  margin-top: 2rem;
+}
+
+.mainPageButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.mainPageLink {
+  text-decoration: underline;
+  color: $dark-gray;
+}

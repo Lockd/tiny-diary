@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  getMonthIdxFromDate,
   getDaysInMonth,
-  getYearFromDate,
   getDayOfTheWeek,
   MONTHS,
   getYearsRange,
@@ -25,15 +23,16 @@ import {
   FormControl,
 } from "@mui/material";
 
-const CalendarManager: React.FC<any> = () => {
+interface ICalendarManagerProps {
+  year: string;
+  month: string;
+}
+
+const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
   const dispatch = useAppDispatch();
 
-  const [selectedMonth, setSelectedMonth] = useState<number>(
-    getMonthIdxFromDate(new Date())
-  );
-  const [selectedYear, setSelectedYear] = useState<number>(
-    getYearFromDate(new Date())
-  );
+  const [selectedMonth, setSelectedMonth] = useState<number>(+month! - 1);
+  const [selectedYear, setSelectedYear] = useState<number>(+year!);
   const [user] = useAuthState(auth);
   const uid = user?.uid;
   const currentMonthDiary = useAppSelector(

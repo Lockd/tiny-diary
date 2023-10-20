@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import { googleSignIn, auth, appSignOut, db } from "../../Firebase";
-import { User } from "firebase/auth";
-import { addDoc, getDoc, doc, collection } from "firebase/firestore";
+import { auth, appSignOut, saveUserInfo } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./UserInfo.module.scss";
 import { Button } from "@mui/material";
+import SignInButton from "../SignInButton/SignInButton";
 
 const Authentication = () => {
   const [user, loading] = useAuthState(auth);
@@ -20,31 +19,6 @@ const Authentication = () => {
         await saveUserInfo(user);
       }
     });
-  };
-
-  const onLogIn = () => {
-    googleSignIn()
-      .then(async (result) => {
-        await saveUserInfo(result.user);
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const saveUserInfo = async (user: User) => {
-    const { displayName: name, email, uid } = user;
-    const userInfo = { name, email, uid };
-
-    try {
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) {
-        await addDoc(collection(db, "users"), userInfo);
-      } else {
-        console.log("[UserInfo]: User was already present");
-      }
-    } catch (e) {
-      console.error("[UserInfo]: error occurred during user creation", e);
-    }
   };
 
   const onLogOut = () => {
@@ -70,11 +44,7 @@ const Authentication = () => {
     );
   }
 
-  return (
-    <Button className={styles.googleSignInBtn} onClick={onLogIn}>
-      Sign In with Google
-    </Button>
-  );
+  return <SignInButton />;
 };
 
 export default Authentication;
