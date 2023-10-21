@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { getYearFromDate, getMonthIdxFromDate } from "../../utils/dateUtils";
 import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getDay } from "date-fns";
 
 const MainPage = () => {
   const [user] = useAuthState(auth);
@@ -14,14 +13,11 @@ const MainPage = () => {
   const currentDate = new Date();
   const currentYear = getYearFromDate(currentDate);
   const currentMonth = getMonthIdxFromDate(currentDate);
-  const currentDay = getDay(currentDate);
-  const currentDayLink = `/${currentYear}/${currentMonth + 1}/${
-    currentDay + 1
-  }`;
+  const currentMonthLink = `/${currentYear}/${currentMonth + 1}`;
 
   useEffect(() => {
     if (user) {
-      navigate(currentDayLink);
+      navigate(currentMonthLink);
     }
   }, [user]);
 
@@ -36,7 +32,7 @@ const MainPage = () => {
         To make sure that your diary is saved and accessible from all of your
         devices please sing in using your google account.
       </p>
-      <div className={styles.mainPageButetonsContainer}>
+      <div className={styles.mainPageButtonsContainer}>
         <SignInButton />
       </div>
     </div>
