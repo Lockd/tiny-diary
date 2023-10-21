@@ -134,13 +134,19 @@ const diarySlice = createSlice({
         [month]: entries,
       };
     },
+    clearDiary(state) {
+      Object.keys(state).forEach((year) => {
+        state[year] = {};
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(saveDiary.fulfilled, (state, action) => {
-      console.log("[DiarySlice]: diary should be saved!");
+      console.log("[DiarySlice]: diary should be saved");
     });
   },
 });
 
-export const { updateDiaryEntry, populateDiary, setMood } = diarySlice.actions;
+export const { updateDiaryEntry, populateDiary, setMood, clearDiary } =
+  diarySlice.actions;
 export default diarySlice.reducer;

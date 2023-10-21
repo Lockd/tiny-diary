@@ -4,10 +4,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./UserInfo.module.scss";
 import { Button } from "@mui/material";
 import SignInButton from "../SignInButton/SignInButton";
+import { useNavigate } from "react-router";
+import { useAppDispatch } from "../../app/hooks";
+import { clearDiary } from "../../Features/Diary/diarySlice";
 
 const Authentication = () => {
   const [user, loading] = useAuthState(auth);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     checkIfLoggedIn();
@@ -23,7 +28,11 @@ const Authentication = () => {
 
   const onLogOut = () => {
     appSignOut()
-      .then(() => console.log("[UserInfo]: user signed out"))
+      .then(() => {
+        console.log("[UserInfo]: user signed out");
+        dispatch(clearDiary());
+        navigate("/");
+      })
       .catch((err) => console.error("[UserInfo]: error signing out", err));
   };
 
