@@ -3,7 +3,11 @@ import styles from "./SignInButton.module.scss";
 import { Button } from "@mui/material";
 import { googleSignIn, saveUserInfo } from "../../Firebase";
 
-const SignInButton = () => {
+interface ISignInButton {
+  className?: string;
+}
+
+const SignInButton: React.FC<ISignInButton> = ({ className }) => {
   const trySignIn = () => {
     googleSignIn()
       .then(async (result) => {
@@ -13,9 +17,9 @@ const SignInButton = () => {
   };
 
   return (
-    <Button className={styles.googleSignInBtn} onClick={trySignIn}>
-      Sign In with Google
-    </Button>
+    <button className={className || styles.signInButton} onClick={trySignIn}>
+      Continue with Google
+    </button>
   );
 };
 

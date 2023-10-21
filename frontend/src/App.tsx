@@ -4,19 +4,20 @@ import EditDiaryPage from "./Pages/EditDiary/EditDiaryPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./Pages/ErrorPage/ErrorPage";
 import MainContent from "./Layout/MainContent/MainContent";
-import MainPage from "./Pages/MainPage/MainPage";
+import MainPage from "./Pages/HomePage/HomePage";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <MainPage />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/:year",
       element: <MainContent />,
       errorElement: <ErrorPage />,
       children: [
-        {
-          path: "/",
-          element: <MainPage />,
-        },
         {
           path: "/:year/:month",
           element: <CalendarPage />,
