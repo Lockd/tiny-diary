@@ -3,7 +3,7 @@
 .homePageContainer {
   background-color: $purple;
   padding: 3rem;
-  min-height: 100vh;
+  min-height: calc(100vh - 3rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +13,7 @@
 }
 
 .homePageTitle {
-  font-family: "Syncopate", sans-serif;
+  font-family: $syncopate-font;
   font-weight: 700;
   font-size: 64px;
   margin: unset;

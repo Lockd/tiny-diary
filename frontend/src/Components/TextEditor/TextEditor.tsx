@@ -9,6 +9,7 @@ import {
 import EditorJS from "@editorjs/editorjs";
 import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import styles from "./TextEditor.module.scss";
 
 interface IDiaryEditorProps {
   day: string;
@@ -44,20 +45,25 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
     dispatch(saveDiary({ day, month, year, uid }));
   };
 
+  const saveDataToRedux = async () => {
+    const editorData = await ejInstance.current?.saver?.save();
+    if (!editorData) return;
+
+    dispatch(updateDiaryEntry({ day, month, year, ...editorData }));
+  };
+
   const initEditor = () => {
     const editor = new EditorJS({
       holder: EDITOR_BLOCK_ID,
-      onReady: () => {
+      onReady: async () => {
         ejInstance.current = editor;
+        await saveDataToRedux();
       },
       autofocus: true,
       data: diaryData ?? DEFAULT_INITIAL_DATA,
       onChange: async () => {
-        const editorData = await editor?.saver?.save();
-        if (!editorData) return;
-
-        dispatch(updateDiaryEntry({ day, month, year, ...editorData }));
         ejInstance.current = editor;
+        await saveDataToRedux();
       },
       tools: EDITOR_TOOLS,
     });
@@ -65,8 +71,10 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
 
   return (
     <>
-      <h2>Enter your diary below</h2>
-      <div id={EDITOR_BLOCK_ID} />
+      <h2 className={styles.textEditorTitle}>
+        Click below to start your diary:
+      </h2>
+      <div id={EDITOR_BLOCK_ID} className={styles.textEditorContainer} />
     </>
   );
 };

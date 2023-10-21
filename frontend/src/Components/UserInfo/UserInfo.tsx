@@ -41,14 +41,9 @@ const Authentication = () => {
   if (user !== null) {
     return (
       <div className={styles.userInfoContainer} ref={wrapperRef}>
-        <div className={styles.userName}>{user?.displayName}</div>
-        <Button
-          onClick={onLogOut}
-          className={styles.logOutButton}
-          variant="outlined"
-        >
+        <button onClick={onLogOut} className={styles.logOutButton}>
           Log out
-        </Button>
+        </button>
       </div>
     );
   }

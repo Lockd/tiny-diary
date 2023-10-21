@@ -4,10 +4,20 @@ $tablet: "min-width: 768px";
 $desktop: "min-width: 1440px";
 
 // colors
-$light-gray: #eee;
-$dark-gray: #797979;
-$active-color: green;
 $white: white;
 $black: black;
 $purple: #d1b9ef;
-$neutral-blue: #b9dcef;
+$header-color: #6c6c6c;
+$dark-gray: #797979;
+$medium-gray: #bbb;
+$light-gray: #f0f0f0;
+
+// mood colors
+$mood-red: #ec704b;
+$mood-purple: #d0b9ef;
+$mood-blue: #b9dcef;
+$mood-yellow: #f5d278;
+$mood-green: #c4efb9;
+
+// fonts
+$syncopate-font: "Syncopate", sans-serif;

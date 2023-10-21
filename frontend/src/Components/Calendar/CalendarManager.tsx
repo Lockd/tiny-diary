@@ -107,7 +107,11 @@ const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
   return (
     <div className={styles.calendarWrapper}>
       <div className={styles.calendarControls}>
-        <Button onClick={onReduceMonth} className={styles.calendarButton}>
+        <Button
+          onClick={onReduceMonth}
+          className={styles.calendarButton}
+          size="small"
+        >
           {"<"}
         </Button>
         <div className={styles.dateSelectContainer}>
@@ -146,7 +150,11 @@ const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
             </Select>
           </FormControl>
         </div>
-        <Button onClick={onIncreaseMonth} className={styles.calendarButton}>
+        <Button
+          onClick={onIncreaseMonth}
+          className={styles.calendarButton}
+          size="small"
+        >
           {">"}
         </Button>
       </div>

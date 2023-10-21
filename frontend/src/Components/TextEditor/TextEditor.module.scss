@@ -1,0 +1,25 @@
+@import "../../styles/variables.scss";
+
+.textEditorTitle {
+  color: $dark-gray;
+  font-weight: 600;
+  margin-top: 2rem;
+  font-size: 18px;
+}
+
+.textEditorContainer {
+  height: 100%;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid $medium-gray;
+  border-radius: 5px;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: 18px;
+  }
+}

@@ -1,5 +1,19 @@
 @import "../../styles/variables.scss";
 
-.moodGraphWrapper {
+.moodGraph {
   width: 100%;
+}
+
+.moodGraphWrapper {
+  border: 1px solid $medium-gray;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.moodGraphTitle {
+  text-transform: uppercase;
+  color: $dark-gray;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0px;
 }

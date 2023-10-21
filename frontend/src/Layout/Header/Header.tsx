@@ -4,6 +4,7 @@ import styles from "./Header.module.scss";
 import UserInfo from "../../Components/UserInfo/UserInfo";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../Firebase";
+import { Typography } from "@mui/material";
 
 const Header = () => {
   const [user] = useAuthState(auth);
@@ -12,7 +13,9 @@ const Header = () => {
 
   return (
     <header className={styles.headerContainer}>
-      <Link to={headerLink}>📝 Tiny Diary</Link>
+      <Link to={headerLink} className={styles.headerTitle}>
+        Tiny Diary
+      </Link>
       <UserInfo />
     </header>
   );

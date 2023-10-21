@@ -21,5 +21,15 @@
 }
 
 .logOutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  background-color: $light-gray;
+  height: 40px;
+  width: 96px;
+  text-transform: uppercase;
+  color: $header-color;
+  border-radius: 10px;
+  font-weight: 600;
 }

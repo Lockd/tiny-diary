@@ -1,14 +1,15 @@
 @import "../../styles/variables.scss";
 
-.moodSliderTitle {
+.moodSelectorTitle {
+  // text-transform: uppercase;
+  color: $header-color;
+  font-weight: 700;
+  font-size: 18px;
 }
 
 .moodButtonsContainer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
-}
-
-.moodButton {
-  flex: 1;
 }
