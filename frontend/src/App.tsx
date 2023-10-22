@@ -14,7 +14,7 @@ function App() {
       errorElement: <ErrorPage />,
     },
     {
-      path: "/:year",
+      path: "/:year/:month",
       element: <MainContent />,
       errorElement: <ErrorPage />,
       children: [

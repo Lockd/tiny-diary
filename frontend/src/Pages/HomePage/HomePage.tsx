@@ -1,25 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./HomePage.module.scss";
 import SignInButton from "../../Components/SignInButton/SignInButton";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { getYearFromDate, getMonthIdxFromDate } from "../../utils/dateUtils";
 import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const HomePage = () => {
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
 
   const currentDate = new Date();
   const currentYear = getYearFromDate(currentDate);
   const currentMonth = getMonthIdxFromDate(currentDate);
   const currentMonthLink = `/${currentYear}/${currentMonth + 1}`;
 
-  useEffect(() => {
-    if (user) {
-      navigate(currentMonthLink);
-    }
-  }, [user]);
+  if (user) {
+    return <Navigate to={currentMonthLink} />;
+  }
 
   return (
     <div className={styles.homePageContainer}>

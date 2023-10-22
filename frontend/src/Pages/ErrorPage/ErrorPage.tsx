@@ -1,38 +1,29 @@
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  isRouteErrorResponse,
+  useRouteError,
+} from "react-router-dom";
+import styles from "./ErrorPage.module.scss";
 
 const ErrorPage = () => {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
-    if (error.status === 401) {
-      // ...
-    } else if (error.status === 404) {
-      // ...
-    }
-
     return (
-      <div id="error-page">
-        <h1>Oops! {error.status}</h1>
-        <p>{error.statusText}</p>
-        {error.data?.message && (
-          <p>
-            <i>{error.data.message}</i>
-          </p>
-        )}
-      </div>
-    );
-  } else if (error instanceof Error) {
-    return (
-      <div id="error-page">
-        <h1>Oops! Unexpected Error</h1>
-        <p>Something went wrong.</p>
-        <p>
-          <i>{error.message}</i>
-        </p>
+      <div id="error-page" className={styles.errorPageContainer}>
+        <div className={styles.errorPage}>
+          <h1 className={styles.errorPageTitle}>Oops! {error.status}</h1>
+          <p className={styles.errorPageMessage}>{error.statusText}</p>
+          {error.data?.message && <p>{error.data.message}</p>}
+          <Link to={"/"} className={styles.goHomeButton}>
+            Home Page
+          </Link>
+        </div>
       </div>
     );
   } else {
-    return <></>;
+    return <Navigate to={"/"} />;
   }
 };
 

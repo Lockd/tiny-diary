@@ -22,6 +22,7 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
+import { useNavigate } from "react-router";
 
 interface ICalendarManagerProps {
   year: string;
@@ -30,6 +31,7 @@ interface ICalendarManagerProps {
 
 const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [selectedMonth, setSelectedMonth] = useState<number>(+month! - 1);
   const [selectedYear, setSelectedYear] = useState<number>(+year!);
@@ -46,7 +48,12 @@ const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
     // TODO download next and previous month if need
     // TODO virtualization
     fetchDocuments();
+    updateUrl();
   }, [selectedMonth, selectedYear, uid]);
+
+  const updateUrl = () => {
+    navigate(`/${selectedYear}/${selectedMonth + 1}`, { replace: true });
+  };
 
   const fetchDocuments = async () => {
     if (!uid || currentMonthDiary) return;
