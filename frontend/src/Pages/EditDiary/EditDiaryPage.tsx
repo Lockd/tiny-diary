@@ -32,14 +32,12 @@ const EditDiary = () => {
       <div className={styles.editDiaryTitleContainer}>
         <Button
           size="small"
+          variant="outlined"
           className={styles.editDiaryBackButton}
           onClick={() => navigate(`/${year}/${month}`)}
         >
-          {"<"}
+          Return to calendar view
         </Button>
-        <h2 className={styles.editDiaryTitle}>
-          Diary entry for {`${day!}.${month!}.${year}`}
-        </h2>
       </div>
       <MoodSelector day={day!} month={month!} year={year!} />
       <TextEditor day={day!} month={month!} year={year!} />

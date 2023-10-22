@@ -55,6 +55,7 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
   const initEditor = () => {
     const editor = new EditorJS({
       holder: EDITOR_BLOCK_ID,
+      placeholder: "Click here and start typing!",
       onReady: async () => {
         ejInstance.current = editor;
         await saveDataToRedux();
@@ -72,7 +73,7 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
   return (
     <>
       <h2 className={styles.textEditorTitle}>
-        Click below to start your diary:
+        Diary entry for {`${day!}.${month!}.${year}`}:
       </h2>
       <div id={EDITOR_BLOCK_ID} className={styles.textEditorContainer} />
     </>

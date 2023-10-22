@@ -34,7 +34,7 @@ const HomePage = () => {
         <br />
         <br />
         To make sure that your diary is saved and accessible from all of your
-        devices please sing in using your google account.
+        devices please sign in using your google account.
       </p>
       <div className={styles.homePageButtonsContainer}>
         <SignInButton className={styles.homePageSignInButton} />

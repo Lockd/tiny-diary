@@ -12,15 +12,7 @@ export const EDITOR_TOOLS = {
 
 export const DEFAULT_INITIAL_DATA = {
   time: new Date().getTime(),
-  blocks: [
-    {
-      type: "header",
-      data: {
-        text: "Click here and start typing!",
-        level: 1,
-      },
-    },
-  ],
+  blocks: [],
 };
 
 export const EDITOR_BLOCK_ID = "editor-block";

@@ -15,5 +15,10 @@
   color: $dark-gray;
   text-align: center;
   font-weight: 600;
+  font-size: 1.125rem;
   margin-bottom: 0px;
+
+  @media screen and ($desktop) {
+    margin-top: 2rem;
+  }
 }

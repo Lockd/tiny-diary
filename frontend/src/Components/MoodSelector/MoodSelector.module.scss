@@ -1,10 +1,10 @@
 @import "../../styles/variables.scss";
 
 .moodSelectorTitle {
-  // text-transform: uppercase;
   color: $header-color;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 18px;
+  margin-top: 2rem;
 }
 
 .moodButtonsContainer {

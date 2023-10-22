@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { auth, appSignOut, saveUserInfo } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import styles from "./UserInfo.module.scss";
-import { Button } from "@mui/material";
 import SignInButton from "../SignInButton/SignInButton";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../app/hooks";

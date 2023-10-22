@@ -5,6 +5,10 @@
   justify-content: space-between;
   align-items: center;
   min-height: 60px;
+
+  @media screen and ($desktop) {
+    margin-bottom: 1rem;
+  }
 }
 
 .headerTitle {

@@ -8,7 +8,9 @@
   padding: 1rem 1rem;
 
   @media screen and ($desktop) {
-    padding: 1rem 4rem;
+    padding: 1rem 0;
+    width: 60%;
+    margin: 0 auto;
   }
 }
 

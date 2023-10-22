@@ -14,10 +14,8 @@
 
 .editDiaryBackButton {
   cursor: pointer;
-  background-color: transparent;
   color: $header-color !important;
-  font-family: $syncopate-font !important;
-  font-size: 22px !important;
+  border-color: $medium-gray !important;
 
   &:hover {
     background-color: $light-gray;
