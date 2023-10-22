@@ -1,10 +1,4 @@
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import { getFirestore, setDoc, getDoc, doc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth, setPersistence } from "firebase/auth";
 import {
@@ -48,7 +42,8 @@ export const saveUserInfo = async (user: User) => {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
     if (!userSnap.exists()) {
-      await addDoc(collection(db, "users"), userInfo);
+      console.log("[saveUserInfo]: added new user");
+      await setDoc(userRef, userInfo);
     } else {
       console.log("[saveUserInfo]: User was already present");
     }

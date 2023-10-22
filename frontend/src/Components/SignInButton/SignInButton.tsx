@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./SignInButton.module.scss";
-import { Button } from "@mui/material";
 import { googleSignIn, saveUserInfo } from "../../Firebase";
 
 interface ISignInButton {
