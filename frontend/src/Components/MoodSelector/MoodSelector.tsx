@@ -30,6 +30,8 @@ const MoodSelector: React.FC<IMoodSelector> = ({ day, month, year }) => {
             sx={{
               padding: "0.5rem",
               borderColor: moodOption.value === mood ? "#1976d2" : "#bbb",
+              backgroundColor:
+                moodOption.value === mood ? "#91c8ff3b" : "transparent",
             }}
             className={styles.moodButton}
             variant="outlined"

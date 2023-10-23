@@ -85,9 +85,13 @@
 }
 
 .calendarDayOutline {
-  border: 1px solid $mood-blue;
+  border: 2px solid $mood-blue;
 }
 
 .calendarDayCurrent {
-  border: 1px solid $mood-purple;
+  border: 2px solid $mood-purple;
+
+  &:hover {
+    border: 2px solid $mood-blue;
+  }
 }
