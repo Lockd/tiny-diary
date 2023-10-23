@@ -11,6 +11,11 @@ const theme = createTheme({
   typography: {
     fontFamily: ["Mukta Malar", "sans-serif"].join(","),
   },
+  palette: {
+    primary: {
+      main: "#d0b9ef",
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(

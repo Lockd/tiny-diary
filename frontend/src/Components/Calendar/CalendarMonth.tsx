@@ -1,7 +1,7 @@
 import React from "react";
 import CalendarDay from "./CalendarDay";
 import styles from "./Calendar.module.scss";
-import { DAYS_OF_THE_WEEK } from "../../utils/dateUtils";
+import { DAYS_OF_THE_WEEK, getDayMonthYear } from "../../utils/dateUtils";
 
 interface ICalendarMonthProps {
   amountOfDays: number;
@@ -16,6 +16,8 @@ const CalendarMonth: React.FC<ICalendarMonthProps> = ({
   year,
   month,
 }) => {
+  const [currentDay, currentMonth, currentYear] = getDayMonthYear(new Date());
+
   const renderDays = () => {
     const days = [];
 
@@ -33,7 +35,20 @@ const CalendarMonth: React.FC<ICalendarMonthProps> = ({
     }
 
     for (let i = 0; i < amountOfDays; i++) {
-      days.push(<CalendarDay key={i} day={i} year={year} month={month} />);
+      const isCurrentDay =
+        currentDay === (i + 1).toString() &&
+        currentYear === year.toString() &&
+        currentMonth === (month + 1).toString();
+
+      days.push(
+        <CalendarDay
+          key={i}
+          day={i}
+          year={year}
+          month={month}
+          isCurrentDay={isCurrentDay}
+        />
+      );
     }
 
     return <>{days.map((day) => day)}</>;

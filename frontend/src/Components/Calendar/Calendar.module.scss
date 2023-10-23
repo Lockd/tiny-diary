@@ -83,3 +83,11 @@
     background-color: $mood-green;
   }
 }
+
+.calendarDayOutline {
+  border: 1px solid $mood-blue;
+}
+
+.calendarDayCurrent {
+  border: 1px solid $mood-purple;
+}

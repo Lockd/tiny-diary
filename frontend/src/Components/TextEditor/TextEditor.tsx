@@ -75,6 +75,9 @@ const TextEditor: React.FC<IDiaryEditorProps> = ({ day, month, year }) => {
       <h2 className={styles.textEditorTitle}>
         Diary entry for {`${day!}.${month!}.${year}`}:
       </h2>
+      <p className={styles.textEditorHint}>
+        All your data is saved automatically
+      </p>
       <div id={EDITOR_BLOCK_ID} className={styles.textEditorContainer} />
     </>
   );

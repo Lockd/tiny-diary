@@ -37,7 +37,7 @@ const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
   const [selectedYear, setSelectedYear] = useState<number>(+year!);
   const [user] = useAuthState(auth);
   const uid = user?.uid;
-  const currentMonthDiary = useAppSelector(
+  const selectedMonthDiary = useAppSelector(
     (state) => state.diary?.[selectedYear]?.[selectedMonth + 1]
   );
 
@@ -56,7 +56,7 @@ const CalendarManager: React.FC<ICalendarManagerProps> = ({ month, year }) => {
   };
 
   const fetchDocuments = async () => {
-    if (!uid || currentMonthDiary) return;
+    if (!uid || selectedMonthDiary) return;
 
     const month = selectedMonth + 1 + "";
     const year = selectedYear + "";

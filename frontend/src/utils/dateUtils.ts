@@ -1,4 +1,4 @@
-import { getMonth, getYear, getDay } from "date-fns";
+import { getMonth, getYear, getDay, format } from "date-fns";
 
 export const DAYS_OF_THE_WEEK = [
   {
@@ -54,6 +54,10 @@ export const MONTHS = [
 ];
 
 // TODO write unit tests for those functions
+
+export const getDayMonthYear = (date: Date) => {
+  return format(date, "dd.MM.yyyy").split(".");
+};
 
 export const getMonthIdxFromDate = (date: Date) => getMonth(date);
 
