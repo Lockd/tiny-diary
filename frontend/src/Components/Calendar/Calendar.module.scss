@@ -48,6 +48,7 @@
 }
 
 .calendarDay {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,10 +89,16 @@
   border: 2px solid $mood-blue;
 }
 
-.calendarDayCurrent {
-  border: 2px solid $mood-purple;
+.calendarDayText {
+  z-index: 10;
+}
 
-  &:hover {
-    border: 2px solid $mood-blue;
-  }
+.calendarDayCurrent {
+  background-color: $header-color;
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  left: calc((100% - 5px) / 2);
+  top: 5px;
 }

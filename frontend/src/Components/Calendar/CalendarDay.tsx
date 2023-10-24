@@ -40,9 +40,6 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
   } else if (blocks) {
     // no mood, but diary entry
     containerClassName += " " + styles.calendarDayOutline;
-  } else if (isCurrentDay) {
-    // no data, but it is current day
-    containerClassName += " " + styles.calendarDayCurrent;
   }
 
   return (
@@ -50,7 +47,8 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
       to={`/${year}/${month + 1}/${day + 1}`}
       className={containerClassName}
     >
-      {day + 1}
+      {isCurrentDay && <div className={styles.calendarDayCurrent} />}
+      <span className={styles.calendarDayText}>{day + 1}</span>
     </Link>
   );
 };
