@@ -13,6 +13,7 @@ import { MOOD_BORDERS } from "../../utils/constants";
 import styles from "./MoodChart.module.scss";
 import { getMonthName } from "../../utils/dateUtils";
 import CustomAxisTick from "./CustomAxisTick";
+import CustomToolTip from "./CustomTooltip";
 
 interface IMoodChartProps {
   year: number;
@@ -70,7 +71,7 @@ const MoodChart: React.FC<IMoodChartProps> = ({
               domain={[MOOD_BORDERS.min, MOOD_BORDERS.max]}
               tick={<CustomAxisTick />}
             />
-            <Tooltip />
+            <Tooltip content={<CustomToolTip />} />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
             <Line
               type="monotone"

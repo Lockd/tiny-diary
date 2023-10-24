@@ -22,3 +22,17 @@
     margin-top: 2rem;
   }
 }
+
+.customTooltipContainer {
+  background-color: $white;
+  border-radius: 5px;
+  border: 1px solid $medium-gray;
+  padding: 0.5rem;
+}
+
+.customTooltipText {
+  margin: unset;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
